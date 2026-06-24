@@ -29,6 +29,16 @@ namespace TaskManagementToolWebApi.Data
             modelBuilder.Entity<User>()
                 .Property(t => t.Role)
                 .HasConversion<string>();
+
+            modelBuilder.Entity<TaskItem>()
+               .HasOne(t => t.User)
+               .WithMany(u => u.Tasks)
+               .HasForeignKey(t => t.AssignedToUserId);
+
+            modelBuilder.Entity<TaskItem>()
+                .HasOne(t => t.Project)
+                .WithMany(p => p.Tasks)
+                .HasForeignKey(t => t.ProjectId);
         }
     }
 }

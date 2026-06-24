@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using TaskManagementToolWebApi.Data;
 using TaskManagementToolWebApi.Models;
+using TaskManagementToolWebApi.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,6 +14,11 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+builder.Services.AddScoped<ITaskService, TaskService>();
+builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IProjectService, ProjectService>();
+
 
 
 var app = builder.Build();
