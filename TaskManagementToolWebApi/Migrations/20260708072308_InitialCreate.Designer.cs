@@ -12,8 +12,8 @@ using TaskManagementToolWebApi.Data;
 namespace TaskManagementToolWebApi.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20260621042722_CreatedDbModels")]
-    partial class CreatedDbModels
+    [Migration("20260708072308_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -74,14 +74,11 @@ namespace TaskManagementToolWebApi.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
 
-                    b.HasIndex("ProjectId");
+                    b.HasIndex("AssignedToUserId");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("ProjectId");
 
                     b.ToTable("TaskItems");
                 });
@@ -124,15 +121,15 @@ namespace TaskManagementToolWebApi.Migrations
 
             modelBuilder.Entity("TaskItem", b =>
                 {
-                    b.HasOne("Project", "Project")
+                    b.HasOne("User", "User")
                         .WithMany("Tasks")
-                        .HasForeignKey("ProjectId")
+                        .HasForeignKey("AssignedToUserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("User", "User")
+                    b.HasOne("Project", "Project")
                         .WithMany("Tasks")
-                        .HasForeignKey("UserId")
+                        .HasForeignKey("ProjectId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

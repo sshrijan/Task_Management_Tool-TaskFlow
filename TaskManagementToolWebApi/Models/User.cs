@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 using TaskManagementToolWebApi.Models;
 
 public class User
@@ -22,6 +23,7 @@ public class User
 
     public bool IsActive { get; set; } = true;
 
+    [JsonIgnore]
     public List<TaskItem> Tasks { get; set; } = new();
 
 }

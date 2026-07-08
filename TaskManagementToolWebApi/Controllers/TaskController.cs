@@ -40,9 +40,6 @@ namespace TaskManagementToolWebApi.Controllers
         {
             var createdTask = await _taskService.CreateAsync(task);
 
-            if (createdTask == null)
-                return BadRequest("Task creation failed");
-
             return CreatedAtAction(
                 nameof(GetById),
                 new { id = createdTask.Id },

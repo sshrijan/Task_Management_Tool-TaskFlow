@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 using TaskManagementToolWebApi.Models;
 
 public class Project
@@ -11,5 +12,6 @@ public class Project
 
     public string? Description { get; set; }
 
+    [JsonIgnore]
     public List<TaskItem> Tasks { get; set; } = new();
 }

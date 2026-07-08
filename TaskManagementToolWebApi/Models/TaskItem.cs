@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 using TaskManagementToolWebApi.Models;
 
 public class TaskItem
@@ -16,8 +17,12 @@ public class TaskItem
 
     [Required]
     public int AssignedToUserId { get; set; }
+
+    [JsonIgnore]
     public User? User { get; set; }
 
     public int ProjectId { get; set; }
+
+    [JsonIgnore]
     public Project? Project { get; set; }
 }
