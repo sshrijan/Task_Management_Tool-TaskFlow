@@ -51,7 +51,12 @@ const Users = () => {
             
             <div className="mt-6 flex gap-3">
               <button onClick={() => { setEditingUser(user); setShowForm(true); }} className="flex-1 py-3 border rounded-2xl text-sm">Edit</button>
-              <button onClick={() => handleDelete(user.id)} className="flex-1 py-3 text-red-600 hover:bg-red-50 rounded-2xl text-sm">Delete</button>
+                <button
+                onClick={() => handleDelete(user.userId)}
+                className="flex-1 py-3 text-red-600 hover:bg-red-50 rounded-2xl text-sm"
+                >
+                Delete
+                </button>
             </div>
           </div>
         ))}

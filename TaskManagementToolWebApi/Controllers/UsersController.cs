@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using TaskManagementToolWebApi.DTOs;
 using TaskManagementToolWebApi.Services;
 
 namespace TaskManagementToolWebApi.Controllers
@@ -33,9 +34,9 @@ namespace TaskManagementToolWebApi.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(User user)
+        public async Task<IActionResult> Create(CreateUserDto dto)
         {
-            var createdUser = await _userService.CreateAsync(user);
+            var createdUser = await _userService.CreateAsync(dto);
 
             return CreatedAtAction(
                 nameof(GetById),
@@ -44,9 +45,9 @@ namespace TaskManagementToolWebApi.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> Update(int id, User user)
+        public async Task<IActionResult> Update(int id, UpdateUserDto dto)
         {
-            var updatedUser = await _userService.UpdateAsync(id, user);
+            var updatedUser = await _userService.UpdateAsync(id, dto);
 
             if (updatedUser == null)
                 return NotFound();

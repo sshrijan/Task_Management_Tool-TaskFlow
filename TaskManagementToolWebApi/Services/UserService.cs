@@ -1,5 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using TaskManagementToolWebApi.Data;
+using TaskManagementToolWebApi.DTOs;
+using TaskManagementToolWebApi.Models;
 
 namespace TaskManagementToolWebApi.Services
 {
@@ -26,26 +28,41 @@ namespace TaskManagementToolWebApi.Services
                 .FirstOrDefaultAsync(u => u.UserId == id);
         }
 
-        public async Task<User> CreateAsync(User user)
+        public async Task<User> CreateAsync(CreateUserDto dto)
         {
+            var user = new User
+            {
+                Name = dto.Name,
+                Email = dto.Email,
+                PasswordHash = dto.PasswordHash,
+                Role = UserRole.Member,
+                CreatedAt = DateTime.UtcNow,
+                IsActive = true
+            };
+
+
             _context.Users.Add(user);
+
             await _context.SaveChangesAsync();
 
             return user;
         }
 
-        public async Task<User?> UpdateAsync(int id, User user)
+        public async Task<User?> UpdateAsync(int id, UpdateUserDto dto)
         {
             var existingUser = await _context.Users.FindAsync(id);
 
             if (existingUser == null)
                 return null;
 
-            existingUser.Name = user.Name;
-            existingUser.Email = user.Email;
-            existingUser.PasswordHash = user.PasswordHash;
-            existingUser.Role = user.Role;
-            existingUser.IsActive = user.IsActive;
+            existingUser.Name = dto.Name;
+            existingUser.Email = dto.Email;
+
+            if (!string.IsNullOrWhiteSpace(dto.PasswordHash))
+                existingUser.PasswordHash = dto.PasswordHash;
+
+            existingUser.Role = dto.Role;
+            existingUser.IsActive = dto.IsActive;
 
             await _context.SaveChangesAsync();
 

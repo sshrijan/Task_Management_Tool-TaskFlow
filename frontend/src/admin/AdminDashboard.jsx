@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { CheckSquare, FolderOpen, Users, TrendingUp } from 'lucide-react';
 import taskService from '../services/taskService';
 
-const Dashboard = () => {
+const AdminDashboard = () => {
   const [stats, setStats] = useState({
     totalTasks: 0,
     todo: 0,
@@ -64,4 +64,4 @@ const Dashboard = () => {
   );
 };
 
-export default Dashboard;
+export default AdminDashboard;
