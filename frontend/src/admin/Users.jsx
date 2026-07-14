@@ -42,22 +42,80 @@ const Users = () => {
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {users.map(user => (
-          <div key={user.id} className="bg-white dark:bg-gray-900 p-6 rounded-3xl">
+          <div
+            key={user.userId}
+            className="bg-white dark:bg-gray-900 p-6 rounded-3xl shadow-sm hover:shadow-md transition"
+          >
+
             <div className="w-16 h-16 bg-gradient-to-br from-purple-500 to-indigo-500 rounded-2xl flex items-center justify-center text-white text-2xl font-bold mb-4">
-              {user.name?.[0] || 'U'}
+              {user.name?.[0]?.toUpperCase() || "U"}
             </div>
-            <h3 className="font-semibold text-lg">{user.name}</h3>
-            <p className="text-gray-500">{user.email}</p>
-            
+
+
+            <h3 className="font-semibold text-lg text-gray-900 dark:text-white">
+              {user.name}
+            </h3>
+
+
+            <p className="text-gray-500 dark:text-gray-400">
+              {user.email}
+            </p>
+
+
+            <span
+              className={`
+                inline-block mt-3 px-3 py-1 rounded-full text-xs font-medium
+                ${
+                  user.role === 0
+                    ? "bg-purple-100 text-purple-700 dark:bg-purple-900 dark:text-purple-300"
+                    : "bg-blue-100 text-blue-700 dark:bg-blue-900 dark:text-blue-300"
+                }
+              `}
+            >
+              {user.role === 0 ? "Admin" : "Member"}
+            </span>
+
+
             <div className="mt-6 flex gap-3">
-              <button onClick={() => { setEditingUser(user); setShowForm(true); }} className="flex-1 py-3 border rounded-2xl text-sm">Edit</button>
-                <button
+
+              <button
+                onClick={() => {
+                  setEditingUser(user);
+                  setShowForm(true);
+                }}
+                className="
+                  flex-1 py-3 
+                  border border-gray-300 dark:border-gray-700
+                  rounded-2xl 
+                  text-sm
+                  hover:bg-gray-100 
+                  dark:hover:bg-gray-800
+                  transition
+                "
+              >
+                Edit
+              </button>
+
+
+              <button
                 onClick={() => handleDelete(user.userId)}
-                className="flex-1 py-3 text-red-600 hover:bg-red-50 rounded-2xl text-sm"
-                >
+                className="
+                  flex-1 py-3
+                  text-red-600
+                  border border-red-200
+                  dark:border-red-900
+                  rounded-2xl
+                  text-sm
+                  hover:bg-red-50
+                  dark:hover:bg-red-950/30
+                  transition
+                "
+              >
                 Delete
-                </button>
+              </button>
+
             </div>
+
           </div>
         ))}
       </div>

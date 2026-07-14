@@ -18,11 +18,9 @@ public class TaskItem
     [Required]
     public int AssignedToUserId { get; set; }
 
-    [JsonIgnore]
     public User? User { get; set; }
 
     public int ProjectId { get; set; }
 
-    [JsonIgnore]
     public Project? Project { get; set; }
 }

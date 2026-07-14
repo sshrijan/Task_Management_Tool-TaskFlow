@@ -16,7 +16,7 @@ const ProjectForm = ({ project, onClose, onSuccess }) => {
     e.preventDefault();
     try {
       if (project) {
-        await projectService.update(project.id, formData);
+        await projectService.update(project.projectId, formData);
       } else {
         await projectService.create(formData);
       }

@@ -51,30 +51,37 @@ const Projects = () => {
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {projects.map(project => (
-          <div key={project.id} className="bg-white dark:bg-gray-900 rounded-3xl p-6 shadow-sm hover:shadow-md transition-all">
-            <div className="flex justify-between items-start">
-              <h3 className="text-xl font-semibold">{project.name || `Project ${project.id}`}</h3>
-              <span className="text-xs px-3 py-1 bg-green-100 text-green-700 dark:bg-green-900 dark:text-green-400 rounded-full">
-                Active
-              </span>
+          <div 
+            key={project.projectId} 
+            className="bg-white dark:bg-gray-900 rounded-3xl p-6 shadow-sm hover:shadow-md transition-all"
+          >
+            <div className="flex justify-between items-start gap-3">
+
+              <h3 className="text-xl font-semibold break-words line-clamp-2">
+                {project.name || `Project ${project.projectId}`}
+              </h3>
             </div>
-            
-            <p className="text-gray-500 mt-3 line-clamp-2">{project.description}</p>
+
+            <p className="text-gray-500 mt-3 line-clamp-3 break-words">
+              {project.description || "No description provided"}
+            </p>
 
             <div className="mt-6 flex gap-3">
               <button
                 onClick={() => handleEdit(project)}
-                className="flex-1 py-3 text-sm font-medium border border-gray-300 dark:border-gray-700 rounded-2xl hover:bg-gray-50 dark:hover:bg-gray-800"
+                className="flex-1 py-3 text-sm font-medium border border-gray-300 dark:border-gray-700 rounded-2xl hover:bg-gray-50 dark:hover:bg-gray-800 transition"
               >
                 Edit
               </button>
+
               <button
-                onClick={() => handleDelete(project.id)}
-                className="flex-1 py-3 text-sm font-medium text-red-600 hover:bg-red-50 dark:hover:bg-red-950/30 rounded-2xl"
+                onClick={() => handleDelete(project.projectId)}
+                className="flex-1 py-3 text-sm font-medium text-red-600 border border-transparent rounded-2xl hover:bg-red-50 dark:hover:bg-red-950/30 transition"
               >
                 Delete
               </button>
             </div>
+
           </div>
         ))}
       </div>
