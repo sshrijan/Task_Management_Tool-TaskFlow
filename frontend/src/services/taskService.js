@@ -8,6 +8,9 @@ const taskService = {
   create: (data) => api.post("/task", data),
   update: (id, data) => api.put(`/task/${id}`, data),
   delete: (id) => api.delete(`/task/${id}`),
+  getByUser(userId) {
+    return api.get(`/task/user/${userId}`);
+}
 };
 
 export default taskService;

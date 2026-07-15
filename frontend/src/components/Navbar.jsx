@@ -1,7 +1,11 @@
 import { Bell, Search, LogOut } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import SearchModal from "../components/SearchModal";
+import { useSearch } from "../context/SearchContext";
 
 const Navbar = () => {
+  const { openSearch,setOpenSearch } = useSearch();
+
   const navigate = useNavigate();
   const user = JSON.parse(localStorage.getItem("user"));
 
@@ -22,8 +26,10 @@ const Navbar = () => {
         <div className="relative flex-1 max-w-md mx-8">
           <input
             type="text"
-            placeholder="Search tasks..."
-            className="w-full bg-gray-100 dark:bg-gray-800 pl-10 pr-4 py-2.5 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+            placeholder="Search Anything..."
+            onClick={() => setOpenSearch(true)}
+            readOnly
+            className="w-full bg-gray-100 dark:bg-gray-800 pl-10 pr-4 py-2.5 rounded-xl text-sm cursor-pointer focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
 
           <Search
@@ -34,9 +40,9 @@ const Navbar = () => {
 
         <div className="flex items-center gap-4">
 
-          <button className="p-3 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-xl">
+          {/* <button className="p-3 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-xl">
             <Bell size={20} />
-          </button>
+          </button> */}
 
           <div className="flex items-center gap-3 pl-4 border-l">
 
@@ -71,6 +77,9 @@ const Navbar = () => {
         </div>
 
       </div>
+      {openSearch && (
+        <SearchModal />
+      )}
     </nav>
   );
 };

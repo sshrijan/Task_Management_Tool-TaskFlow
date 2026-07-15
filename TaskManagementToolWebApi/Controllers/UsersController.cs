@@ -33,6 +33,7 @@ namespace TaskManagementToolWebApi.Controllers
             return Ok(user);
         }
 
+
         [HttpPost]
         public async Task<IActionResult> Create(CreateUserDto dto)
         {

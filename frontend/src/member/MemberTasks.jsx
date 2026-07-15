@@ -24,11 +24,10 @@ const statusColumns = [
   }
 ];
 
-const Tasks = () => {
+const MemberTasks = () => {
   const [tasks, setTasks] = useState([]);
   const [view, setView] = useState("board");
   const [showForm, setShowForm] = useState(false);
-  const [editingTask, setEditingTask] = useState(null);
   const [selectedTask, setSelectedTask] = useState(null);
   const [isDragging, setIsDragging] = useState(false);
 
@@ -39,7 +38,9 @@ const Tasks = () => {
 
   const fetchTasks = async () => {
     try {
-      const res = await taskService.getAll();
+      const user = JSON.parse(localStorage.getItem("user"));
+
+      const res = await taskService.getByUser(user.userId);
       setTasks(res.data);
     } catch (error) {
       console.error(error);
@@ -101,6 +102,24 @@ const Tasks = () => {
     }
   };
 
+  const handleStatusChange = async (updatedTask) => {
+  try {
+    await taskService.update(
+      updatedTask.id,
+      updatedTask
+    );
+
+    // refresh tasks after update
+    fetchTasks();
+
+    // close details modal
+    setSelectedTask(null);
+
+  } catch (error) {
+    console.error("Failed to update task status", error);
+  }
+};
+
   const getTasks = (status) =>
     tasks.filter(task => task.status === status);
 
@@ -116,17 +135,6 @@ const Tasks = () => {
             Manage project tasks
           </p>
         </div>
-
-        <button
-          onClick={() => {
-            setEditingTask(null);
-            setShowForm(true);
-          }}
-          className="bg-blue-600 hover:bg-blue-700 text-white px-5 py-3 rounded-2xl flex items-center gap-2"
-        >
-          <Plus size={20} />
-          New Task
-        </button>
       </div>
 
       <div className="flex gap-2">
@@ -399,32 +407,18 @@ const Tasks = () => {
         </div>
       )}
 
-      {showForm && (
-        <TaskForm
-          task={editingTask}
-          onClose={() => {
-            setShowForm(false);
-            setEditingTask(null);
-          }}
-          onSuccess={fetchTasks}
-        />
-      )}
+      
 
       {selectedTask && (
         <TaskDetails
           task={selectedTask}
-          canManage={true}
+          canManage={false}
           onClose={() => setSelectedTask(null)}
-          onEdit={(task) => {
-            setEditingTask(task);
-            setShowForm(true);
-            setSelectedTask(null);
-          }}
-          onDelete={handleDelete}
+          onStatusChange={handleStatusChange}
         />
       )}
     </div>
   );
 };
 
-export default Tasks;
+export default MemberTasks;

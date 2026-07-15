@@ -28,6 +28,15 @@ namespace TaskManagementToolWebApi.Services
                 .FirstOrDefaultAsync(t => t.Id == id);
         }
 
+        public async Task<IEnumerable<TaskItem>> GetByUserIdAsync(int userId)
+        {
+            return await _context.TaskItems
+                .Include(t => t.User)
+                .Include(t => t.Project)
+                .Where(t => t.AssignedToUserId == userId)
+                .ToListAsync();
+        }
+
         public async Task<TaskItem> CreateAsync(TaskItem task)
         {
             _context.TaskItems.Add(task);

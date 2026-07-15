@@ -13,8 +13,8 @@ import Users from "./admin/Users";
 import Projects from "./admin/Projects";
 import AdminTasks from "./admin/Tasks";
 
+import MemberTasks from "./member/MemberTasks";
 import MemberDashboard from "./member/MemberDashboard";
-import MyTasks from "./member/MyTasks";
 
 
 function App() {
@@ -57,7 +57,7 @@ function App() {
           }
         >
           <Route index element={<MemberDashboard />} />
-          <Route path="tasks" element={<MyTasks />} />
+          <Route path="tasks" element={<MemberTasks />} />
         </Route>
 
 

@@ -23,7 +23,12 @@ namespace TaskManagementToolWebApi.Controllers
             var tasks = await _taskService.GetAllAsync();
             return Ok(tasks);
         }
-
+        [HttpGet("user/{userId}")]
+        public async Task<ActionResult<IEnumerable<TaskItem>>> GetByUserId(int userId)
+        {
+            var tasks = await _taskService.GetByUserIdAsync(userId);
+            return Ok(tasks);
+        }
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(int id)
         {
