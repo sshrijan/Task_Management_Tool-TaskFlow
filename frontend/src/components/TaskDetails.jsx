@@ -175,7 +175,10 @@ import { X, Folder, User, Flag, Clock } from "lucide-react";
               </button>
 
               <button
-                onClick={() => onDelete(task.id)}
+                onClick={async () => {
+                  await onDelete(task.id);
+                  onClose();
+                }}
                 className="flex-1 py-3 bg-red-600 hover:bg-red-700 text-white rounded-2xl"
               >
                 Delete

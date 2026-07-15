@@ -17,6 +17,10 @@ namespace TaskManagementToolWebApi.Data
         {
             base.OnModelCreating(modelBuilder);
 
+            modelBuilder.Entity<User>()
+                .HasIndex(u => u.Email)
+                .IsUnique();
+
             // Enum stored as string instead of int
             modelBuilder.Entity<TaskItem>()
                 .Property(t => t.Status)

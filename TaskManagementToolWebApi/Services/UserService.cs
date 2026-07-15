@@ -39,16 +39,22 @@ namespace TaskManagementToolWebApi.Services
 
         public async Task<User> CreateAsync(CreateUserDto dto)
         {
+            var existingUser = await _context.Users
+                .FirstOrDefaultAsync(u => u.Email == dto.Email);
+
+            if (existingUser != null)
+            {
+                throw new Exception("Email already exists");
+            }
+
             var user = new User
             {
                 Name = dto.Name,
                 Email = dto.Email,
                 PasswordHash = dto.PasswordHash,
                 Role = UserRole.Member,
-                CreatedAt = DateTime.UtcNow,
                 IsActive = true
             };
-
 
             _context.Users.Add(user);
 

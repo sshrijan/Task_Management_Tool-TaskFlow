@@ -37,12 +37,19 @@ namespace TaskManagementToolWebApi.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(CreateUserDto dto)
         {
-            var createdUser = await _userService.CreateAsync(dto);
+            try
+            {
+                var createdUser = await _userService.CreateAsync(dto);
 
-            return CreatedAtAction(
-                nameof(GetById),
-                new { id = createdUser.UserId },
-                createdUser);
+                return CreatedAtAction(
+                    nameof(GetById),
+                    new { id = createdUser.UserId },
+                    createdUser);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         [HttpPut("{id}")]

@@ -66,13 +66,13 @@ const Users = () => {
               className={`
                 inline-block mt-3 px-3 py-1 rounded-full text-xs font-medium
                 ${
-                  user.role === 0
+                  user.role === "Admin"
                     ? "bg-purple-100 text-purple-700 dark:bg-purple-900 dark:text-purple-300"
                     : "bg-blue-100 text-blue-700 dark:bg-blue-900 dark:text-blue-300"
                 }
               `}
             >
-              {user.role === 0 ? "Admin" : "Member"}
+              {user.role}
             </span>
 
 

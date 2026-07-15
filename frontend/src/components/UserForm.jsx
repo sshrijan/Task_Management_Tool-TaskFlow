@@ -8,7 +8,7 @@ const UserForm = ({ user, onClose, onSuccess }) => {
     name: "",
     email: "",
     passwordHash: "",
-    role: 1
+    role: "Member"
   });
 
   useEffect(() => {
@@ -16,7 +16,7 @@ const UserForm = ({ user, onClose, onSuccess }) => {
       setFormData({
         name: user.name,
         email: user.email,
-        passwordHash: user.passwordHash || "",
+        passwordHash: "",
         role: user.role
       });
     }
@@ -35,7 +35,15 @@ const UserForm = ({ user, onClose, onSuccess }) => {
 
     } catch(error) {
       console.error(error);
-      alert("Failed to save user");
+
+      if(error.response?.status === 400)
+      {
+        alert(error.response.data);
+      }
+      else
+      {
+        alert("Failed to save user");
+      }
     }
   };
 
@@ -54,88 +62,109 @@ const UserForm = ({ user, onClose, onSuccess }) => {
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-5">
-          <input
-            type="text"
-            placeholder="Full Name"
-            value={formData.name}
-            onChange={(e)=>setFormData({
-              ...formData,
-              name:e.target.value
-            })}
-            className="w-full px-4 py-3 rounded-2xl border"
-            required
-          />
+          <div>
+            <label className="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">
+              Full Name
+            </label>
 
-          <input
-            type="email"
-            placeholder="Email Address"
-            value={formData.email}
-            onChange={(e)=>setFormData({
-              ...formData,
-              email:e.target.value
-            })}
-            className="w-full px-4 py-3 rounded-2xl border"
-            required
-          />
-
-          <div className="relative">
             <input
-              type={showPassword ? "text" : "password"}
-              placeholder={
-                user
-                  ? "New Password (leave blank to keep current)"
-                  : "Password"
-              }
-              value={formData.passwordHash}
+              type="text"
+              value={formData.name}
+              onChange={(e)=>setFormData({
+                ...formData,
+                name:e.target.value
+              })}
+              className="w-full px-4 py-3 rounded-2xl border dark:border-gray-700 bg-white dark:bg-gray-800"
+              required
+            />
+          </div>
+
+
+          <div>
+            <label className="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">
+              Email Address
+            </label>
+
+            <input
+              type="email"
+              value={formData.email}
+              onChange={(e)=>setFormData({
+                ...formData,
+                email:e.target.value
+              })}
+              className="w-full px-4 py-3 rounded-2xl border dark:border-gray-700 bg-white dark:bg-gray-800"
+              required
+            />
+          </div>
+
+
+          <div>
+            <label className="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">
+              Password
+            </label>
+
+            <div className="relative">
+              <input
+                type={showPassword ? "text" : "password"}
+                placeholder={
+                  user
+                    ? "New Password"
+                    : "Enter password"
+                }
+                value={formData.passwordHash}
+                onChange={(e) =>
+                  setFormData({
+                    ...formData,
+                    passwordHash: e.target.value
+                  })
+                }
+                className="w-full px-4 py-3 pr-12 rounded-2xl border dark:border-gray-700 bg-white dark:bg-gray-800"
+                required={!user}
+              />
+
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-500"
+              >
+                {showPassword ? <EyeOff size={20}/> : <Eye size={20}/>}
+              </button>
+            </div>
+          </div>
+
+
+          <div>
+            <label className="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">
+              Role
+            </label>
+
+            <select
+              value={formData.role}
               onChange={(e) =>
                 setFormData({
                   ...formData,
-                  passwordHash: e.target.value
+                  role: e.target.value
                 })
               }
-              className="w-full px-4 py-3 pr-12 rounded-2xl border"
-              required={!user}
-            />
-
-            <button
-              type="button"
-              onClick={() => setShowPassword(!showPassword)}
-              className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700"
+              className="
+                w-full px-4 py-3 rounded-2xl
+                border border-gray-200 dark:border-gray-700
+                bg-white dark:bg-gray-800
+                text-gray-900 dark:text-white
+                focus:outline-none focus:ring-2 focus:ring-blue-500
+              "
             >
-              {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
-            </button>
+              <option value="Admin">
+                Admin
+              </option>
+
+              <option value="Member">
+                Member
+              </option>
+
+            </select>
           </div>
 
-          <select
-            value={formData.role}
-            onChange={(e) =>
-              setFormData({
-                ...formData,
-                role: e.target.value
-              })
-            }
-            className="
-              w-full px-4 py-3 rounded-2xl
-              border border-gray-200 dark:border-gray-700
-              bg-white dark:bg-gray-800
-              text-gray-900 dark:text-white
-              focus:outline-none focus:ring-2 focus:ring-blue-500
-            "
-          >
-            <option
-              value="Admin"
-              className="bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
-            >
-              Admin
-            </option>
-
-            <option
-              value="Member"
-              className="bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
-            >
-              Member
-            </option>
-          </select>
 
           <div className="flex gap-3 pt-4">
             <button
@@ -148,11 +177,12 @@ const UserForm = ({ user, onClose, onSuccess }) => {
 
             <button
               type="submit"
-              className="flex-1 py-3 bg-blue-600 text-white rounded-2xl"
+              className="flex-1 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-2xl"
             >
               Save
             </button>
           </div>
+
         </form>
       </div>
     </div>

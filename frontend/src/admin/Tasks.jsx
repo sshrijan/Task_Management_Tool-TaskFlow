@@ -91,15 +91,18 @@ const Tasks = () => {
   };
 
   const handleDelete = async (id) => {
-    if (!window.confirm("Delete this task?")) return;
+  if (!window.confirm("Delete this task?")) return;
 
-    try {
-      await taskService.delete(id);
-      fetchTasks();
-    } catch (error) {
-      console.error(error);
-    }
-  };
+  try {
+    await taskService.delete(id);
+
+    await fetchTasks();
+
+  } catch (error) {
+    console.error(error);
+    throw error; 
+  }
+};
 
   const getTasks = (status) =>
     tasks.filter(task => task.status === status);
@@ -413,14 +416,17 @@ const Tasks = () => {
       {selectedTask && (
         <TaskDetails
           task={selectedTask}
-          canManage={true}
           onClose={() => setSelectedTask(null)}
           onEdit={(task) => {
             setEditingTask(task);
             setShowForm(true);
             setSelectedTask(null);
           }}
-          onDelete={handleDelete}
+          onDelete={async (id) => {
+            await handleDelete(id);
+            setSelectedTask(null);
+          }}
+          canManage={true}
         />
       )}
     </div>
